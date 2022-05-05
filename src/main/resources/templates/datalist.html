@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css"
+	th:href="@{css/bootstrap.min.css}">
+<title>List of fitness activities</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<div>
+		<h1>Exercise data</h1>
+
+
+		<table class="table table-striped">
+			<tr>
+				<th>ID</th>
+				<th>Name</th>
+				<th>HR (Avg.)</th>
+				<th>Length (Km.)</th>
+				<th>Duration (Min.)</th>
+				<th>Category</th>
+				<th></th>
+				<th></th>
+
+			</tr>
+			<tr th:each="data : ${listofdata}">
+				<td th:text="${data.id}"></td>
+				<td th:text="${data.title}"></td>
+				<td th:text="${data.hr}"></td>
+				<td th:text="${data.length}"></td>
+				<td th:text="${data.time}"></td>
+				<td th:text="${data.category}"></td>
+				<td sec:authorize="hasAuthority('ADMIN')"><a
+					th:href="@{/delete/{id}(id=${data.id})}" class="btn btn-success">Delete</a></td>
+				<td sec:authorize="hasAuthority('ADMIN')"><a
+					th:href="@{/edit/{id}(id=${data.id})}" class="btn btn-success">Edit</a></td>
+			</tr>
+		</table>
+		<a href="/add" class="btn btn-success">Add data</a>
+		<div>
+			<br>
+		</div>
+
+		<div id="userlogin">
+			<h5 id="usermessage" th:inline="text">
+				Logged in as [[${#httpServletRequest.remoteUser}]]!
+				</h5>
+				<form th:action="@{/logout}" method="post"
+					sec:authorize="isAuthenticated()">
+					<input type="submit" value="Sign Out" />
+				</form>
+		</div>
+
+	</div>
+
+
+
+
+</body>
+</html>
